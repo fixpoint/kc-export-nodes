@@ -5,9 +5,10 @@ import argparse
 import os
 import csv
 import openpyxl
+import json
+import jmespath
 
 from collections import defaultdict
-from lib import helper
 from lib.helper import logger
 from lib.kompira_cloud import KompiraCloudAPI
 from openpyxl.utils import get_column_letter
@@ -55,10 +56,10 @@ def export_xlsx(rows, filename):
 
             cell.border = border
 
-            if type(row[header]) == int:
-                col_len = len(str(row[header]))
-            else:
+            if type(row[header]) == str:
                 col_len = len(row[header])
+            else:
+                col_len = len(str(row[header]))
             if col_len > max_dims[header]:
                 max_dims[header] = col_len
         row_num += 1
@@ -78,6 +79,15 @@ def main(args):
     if not os.path.exists(args.config_path):
         logger.error('file "%s" is not found.' % args.config_path)
         exit(1)
+    target = ''
+    if args.url[-13:] == 'managed-nodes':
+        target = 'managed-nodes'
+    elif args.url[-9:] == 'snapshots':
+        target = 'snapshots'
+    else:
+        logger.error('%s invalid url.' % args.url)
+        exit(1)
+
     if args.format not in accept_format:
         logger.error('format "%s" is not supported.' % args.format)
         exit(1)
@@ -99,52 +109,62 @@ def main(args):
     else:
         kcapi = KompiraCloudAPI(config['kompira_cloud']['token'])
 
-    logger.info("Get node list from KompiraCloud")
-    res_json = kcapi.get_from_url(args.nodelist_url, {'limit': 500})
+    logger.info("Get list from KompiraCloud")
+
+    res_json = kcapi.get_from_url(args.url, {'limit': 500})
     items = res_json['items']
     logger.debug(items)
 
     rows = []
     for item in items:
-        managedNodeId = helper.dig(item, 'managedNodeId')
-        pk_res_json = kcapi.get_from_url(args.nodelist_url + '/%s/packages' % managedNodeId, {})
-        logger.debug(pk_res_json)
-        wu_res_json = kcapi.get_from_url(args.nodelist_url + '/%s/windows-updates' % managedNodeId, {})
-        logger.debug(wu_res_json)
+        if target == 'managed-nodes':  # Node List
+            managedNodeId = jmespath.search('managedNodeId', item)
+            pk_res_json = kcapi.get_from_url(args.url + '/%s/packages' % managedNodeId, {})
+            logger.debug(pk_res_json)
+            wu_res_json = kcapi.get_from_url(args.url + '/%s/windows-updates' % managedNodeId, {})
+            logger.debug(wu_res_json)
 
-        row = {
-            'networkId': helper.dig(item, 'networkId'),
-            'managedNodeId': managedNodeId,
-            'displayName': helper.dig(item, 'displayName'),
-            'hostName': helper.dig(item, 'addresses', 0, 'hostnames', 0, 'hostname'),
-            'ipAddress': helper.dig(item, 'addresses', 0, 'addr'),
-            'subnet': helper.dig(item, 'addresses', 0, 'subnet'),
-            'macaddr': helper.dig(item, 'addresses', 0, 'macaddr'),
-            'vendor': helper.dig(item, 'addresses', 0, 'extraFields', 'macaddr', 'organizationName'),
-            'systemFamily': helper.dig(item, 'system', 'family'),
-            'systemVersion': helper.dig(item, 'system', 'version'),
-            'systemSerial': helper.dig(item, 'system', 'serial'),
-            'biosVendorName': helper.dig(item, 'extraFields', 'bios', 'vendorName'),
-            'biosVersionNumber': helper.dig(item, 'extraFields', 'bios', 'versionNumber'),
-            'motherboardVendorName': helper.dig(item, 'extraFields', 'motherboard', 'vendorName'),
-            'motherboardModelNumber': helper.dig(item, 'extraFields', 'motherboard', 'modelNumber'),
-            'motherboardVersionNumber': helper.dig(item, 'extraFields', 'motherboard', 'versionNumber'),
-            'motherboardSerialNumber': helper.dig(item, 'extraFields', 'motherboard', 'serialNumber'),
-            'productModelNumber': helper.dig(item, 'extraFields', 'product', 'modelNumber'),
-            'productModelName': helper.dig(item, 'extraFields', 'product', 'modelName'),
-            'productSerialNumber': helper.dig(item, 'extraFields', 'product', 'serialNumber'),
-            'productVersionNumber': helper.dig(item, 'extraFields', 'product', 'versionNumber'),
-            'productFirmwareVersionNumber': helper.dig(item, 'extraFields', 'product', 'firmwareVersionNumber'),
-            'productVendorName': helper.dig(item, 'extraFields', 'product', 'vendorName'),
-            'cpuNumberOfSockets': helper.dig(item, 'extraFields', 'cpu', 'numberOfSockets'),
-            'cpuNumberOfCores': helper.dig(item, 'extraFields', 'cpu', 'numberOfCores'),
-            'cpuNumberOfProcessors': helper.dig(item, 'extraFields', 'cpu', 'numberOfProcessors'),
-            'memoryTotalSize': helper.dig(item, 'extraFields', 'memory', 'totalSize'),
-            'storageTotalSize': helper.dig(item, 'extraFields', 'storage', 'totalSize'),
-            'packagesTotal': helper.dig(pk_res_json, 'total'),
-            'windowsupdatesTotal': helper.dig(wu_res_json, 'total'),
-            'updatedAt': helper.dig(item, 'updatedAt'),
-        }
+            row = {
+                'networkId': jmespath.search('networkId', item),
+                'managedNodeId': managedNodeId,
+                'displayName': jmespath.search('displayName', item),
+                'hostName': jmespath.search('addresses[0].hostnames[0].hostname', item),
+                'ipAddress': jmespath.search('addresses[0].addr', item),
+                'subnet': jmespath.search('addresses[0].subnet', item),
+                'macaddr': jmespath.search('addresses[0].macaddr', item),
+                'vendor': jmespath.search('addresses[0].extraFields.macaddr.organizationName', item),
+                'systemFamily': jmespath.search('system.family', item),
+                'systemVersion': jmespath.search('system.version', item),
+                'systemSerial': jmespath.search('system.serial', item),
+                'biosVendorName': jmespath.search('extraFields.bios.vendorName', item),
+                'biosVersionNumber': jmespath.search('extraFields.bios.versionNumber', item),
+                'motherboardVendorName': jmespath.search('extraFields.motherboard.vendorName', item),
+                'motherboardModelNumber': jmespath.search('extraFields.motherboard.modelNumber', item),
+                'motherboardVersionNumber': jmespath.search('extraFields.motherboard.versionNumber', item),
+                'motherboardSerialNumber': jmespath.search('extraFields.motherboard.serialNumber', item),
+                'productModelNumber': jmespath.search('extraFields.product.modelNumber', item),
+                'productModelName': jmespath.search('extraFields.product.modelName', item),
+                'productSerialNumber': jmespath.search('extraFields.product.serialNumber', item),
+                'productVersionNumber': jmespath.search('extraFields.product.versionNumber', item),
+                'productFirmwareVersionNumber': jmespath.search('extraFields.product.firmwareVersionNumber', item),
+                'productVendorName': jmespath.search('extraFields.product.vendorName', item),
+                'cpuNumberOfSockets': jmespath.search('extraFields.cpu.numberOfSockets', item),
+                'cpuNumberOfCores': jmespath.search('extraFields.cpu.numberOfCores', item),
+                'cpuNumberOfProcessors': jmespath.search('extraFields.cpu.numberOfProcessors', item),
+                'memoryTotalSize': jmespath.search('extraFields.memory.totalSize', item),
+                'storageTotalSize': jmespath.search('extraFields.storage.totalSize', item),
+                'packagesTotal': jmespath.search('total', pk_res_json),
+                'windowsupdatesTotal': jmespath.search('total', wu_res_json),
+                'updatedAt': jmespath.search('updatedAt', item)
+            }
+            if not args.zeroth:
+                row['hostName'] = json.dumps(jmespath.search('addresses[].hostnames[].hostname', item))
+                row['ipAddress'] = json.dumps(jmespath.search('addresses[].addr', item))
+                row['subnet'] = json.dumps(jmespath.search('addresses[].subnet', item))
+                row['macaddr'] = json.dumps(jmespath.search('addresses[].macaddr', item))
+                row['vendor'] = json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item))
+        else:  # Snapshot List
+            pass
         rows.append(row)
 
     if args.format == 'csv':
@@ -158,9 +178,9 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--url', type=str, required=True)
-    parser.add_argument('--type', type=str, required=True)
     parser.add_argument('--config_path', type=str, default='config.yml')
     parser.add_argument('--filename', type=str)
     parser.add_argument('--format', type=str, default='csv')
+    parser.add_argument('--zeroth', type=int, default=1)
     args = parser.parse_args()
     main(args)

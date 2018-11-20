@@ -170,7 +170,6 @@ def main(args):
             startedAt = jmespath.search('task.startedAt', item)
             terminatedAt = jmespath.search('task.terminatedAt', item)
 
-            # 差分の取得
             deltaTime = datetime.timedelta()
             if startedAt and terminatedAt:
                 deltaTime = datetime.datetime.strptime(terminatedAt, time_format) - datetime.datetime.strptime(startedAt, time_format)

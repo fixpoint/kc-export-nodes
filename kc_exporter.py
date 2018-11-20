@@ -7,6 +7,7 @@ import csv
 import openpyxl
 import json
 import jmespath
+import datetime
 
 from collections import defaultdict
 from lib.helper import logger
@@ -15,6 +16,8 @@ from openpyxl.utils import get_column_letter
 from openpyxl.styles.borders import Border, Side
 
 accept_format = ['csv', 'xlsx']
+
+time_format = '%Y-%m-%dT%H:%M:%SZ'
 
 
 border = Border(
@@ -163,8 +166,27 @@ def main(args):
                 row['subnet'] = json.dumps(jmespath.search('addresses[].subnet', item))
                 row['macaddr'] = json.dumps(jmespath.search('addresses[].macaddr', item))
                 row['vendor'] = json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item))
-        else:  # Snapshot List
-            pass
+        elif target == 'snapshots':  # Snapshot List
+            startedAt = jmespath.search('task.startedAt', item)
+            terminatedAt = jmespath.search('task.terminatedAt', item)
+
+            # 差分の取得
+            deltaTime = datetime.timedelta()
+            if startedAt and terminatedAt:
+                deltaTime = datetime.datetime.strptime(terminatedAt, time_format) - datetime.datetime.strptime(startedAt, time_format)
+
+            row = {
+                'networkId': jmespath.search('networkId', item),
+                'createdAt': jmespath.search('createdAt', item),
+                'startedAt': startedAt,
+                'terminatedAt': terminatedAt,
+                'deltaTime': deltaTime,
+                'ksockets': len(jmespath.search('ksockets', item)),
+                'numberOfNodes': jmespath.search('numberOfNodes', item),
+                'numberOfAddresses': jmespath.search('numberOfAddresses', item),
+                'taskStatus': jmespath.search('task.status', item),
+            }
+
         rows.append(row)
 
     if args.format == 'csv':

@@ -1,5 +1,5 @@
 kompira_cloud:
-  token: token: your_kompira_cloud_api_token
+  token: your_kompira_cloud_api_token
   # basic_auth:
     # username: fixpoint
     # password: fixpoint

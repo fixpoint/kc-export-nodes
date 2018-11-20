@@ -131,11 +131,11 @@ def main(args):
                 'networkId': jmespath.search('networkId', item),
                 'managedNodeId': managedNodeId,
                 'displayName': jmespath.search('displayName', item),
-                'hostName': jmespath.search('addresses[0].hostnames[0].hostname', item),
-                'ipAddress': jmespath.search('addresses[0].addr', item),
-                'subnet': jmespath.search('addresses[0].subnet', item),
-                'macaddr': jmespath.search('addresses[0].macaddr', item),
-                'vendor': jmespath.search('addresses[0].extraFields.macaddr.organizationName', item),
+                'hostName': json.dumps(jmespath.search('addresses[].hostnames[].hostname', item)),
+                'ipAddress': json.dumps(jmespath.search('addresses[].addr', item)),
+                'subnet': json.dumps(jmespath.search('addresses[].subnet', item)),
+                'macaddr': json.dumps(jmespath.search('addresses[].macaddr', item)),
+                'vendor': json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item)),
                 'systemFamily': jmespath.search('system.family', item),
                 'systemVersion': jmespath.search('system.version', item),
                 'systemSerial': jmespath.search('system.serial', item),
@@ -160,12 +160,12 @@ def main(args):
                 'windowsupdatesTotal': jmespath.search('total', wu_res_json),
                 'updatedAt': jmespath.search('updatedAt', item)
             }
-            if not args.zeroth:
-                row['hostName'] = json.dumps(jmespath.search('addresses[].hostnames[].hostname', item))
-                row['ipAddress'] = json.dumps(jmespath.search('addresses[].addr', item))
-                row['subnet'] = json.dumps(jmespath.search('addresses[].subnet', item))
-                row['macaddr'] = json.dumps(jmespath.search('addresses[].macaddr', item))
-                row['vendor'] = json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item))
+            if args.zeroth:
+                row['hostName'] = jmespath.search('addresses[0].hostnames[0].hostname', item)
+                row['ipAddress'] = jmespath.search('addresses[0].addr', item)
+                row['subnet'] = jmespath.search('addresses[0].subnet', item)
+                row['macaddr'] = jmespath.search('addresses[0].macaddr', item)
+                row['vendor'] = jmespath.search('addresses[0].extraFields.macaddr.organizationName', item)
         elif target == 'snapshots':  # Snapshot List
             startedAt = jmespath.search('task.startedAt', item)
             terminatedAt = jmespath.search('task.terminatedAt', item)
@@ -202,6 +202,6 @@ if __name__ == '__main__':
     parser.add_argument('--config_path', type=str, default='config.yml')
     parser.add_argument('--filename', type=str)
     parser.add_argument('--format', type=str, default='csv')
-    parser.add_argument('--zeroth', type=int, default=1)
+    parser.add_argument('--zeroth', action='store_true')
     args = parser.parse_args()
     main(args)

@@ -81,7 +81,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | updatedAt                    | Last updated datetime |
 
 
-### snapshot-node
+### snapshot-nodes
 
 | Column Name | Description |
 | ----- | ----- |

@@ -1,6 +1,8 @@
 # kc-export-nodes
 Export Nodes data on Kompira cloud
 
+[Japanese README](README-ja.md)
+
 ## Requirements
 - Python 3.6.5
 
@@ -36,7 +38,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
 
 # Output snapshot-node list to xlsx file
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots --filename kc_snapshotlist --format xlsx
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId> --filename kc_snapshotlist --format xlsx
 ```
 
 ## Columns
@@ -80,8 +82,8 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 
 * `--url URL`
     * node list url or snapshots url
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes `
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots`
+    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
+    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>`
 * `--config_path FILEPATH`
     * config.yml path
     * default:`config.yml`

@@ -1,5 +1,5 @@
-# kc-exporter.py
-Integration Tool for Kompira cloud to csv(excel)
+# kc-export-nodes
+Export Nodes data on Kompira cloud
 
 ## Requirements
 - Python 3.6.5
@@ -23,30 +23,65 @@ kompira_cloud:
 
 ## Usage
 
-Output Kompira Cloud node list or snapshot list.
-
+Output Kompira cloud node list or snapshot list to local file.
 
 ```
-# node list(Excel)
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networdId>/managed-nodes --filename kc_nodelist --format xlsx
+# Output node list to xlsx file
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx
 
-# node list(csv)
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networdId>/managed-nodes --filename kc_nodelist --format csv
+# Output node list to csv file
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format csv
 
 # node list(0 array data only)
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networdId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
 
-# snapshot list(Excel)
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networdId>/snapshots --filename kc_snapshotlist --format xlsx
-
+# Output snapshot-node list to xlsx file
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots --filename kc_snapshotlist --format xlsx
 ```
+
+## Columns
+
+| Column Name | Description |
+| ----- | ----- |
+| networkId                    | Network ID on Kompira cloud |
+| managedNodeId                | Managed Node ID on Kompira cloud |
+| displayName                  | Display Name |
+| hostName                     | Hostname |
+| ipAddress                    | IP Address |
+| subnet                       | subnet |
+| macaddr                      | Mac Address |
+| vendor                       | Vendor Name (from Mac Address) |
+| systemFamily                 | System family name |
+| systemVersion                | Version number of system |
+| systemSerial                 | Serial number of system |
+| biosVendorName               | Vendor name of bios |
+| biosVersionNumber            | Version number of bios |
+| motherboardVendorName        | Vendor name of motherboard |
+| motherboardModelNumber       | Model number of motherboard |
+| motherboardVersionNumber     | Version number of motherboard |
+| motherboardSerialNumber      | Serial number of motherboard |
+| productModelNumber           | Model number of product |
+| productModelName             | Model name of product |
+| productSerialNumber          | Serial number of product |
+| productVersionNumber         | Version number of product |
+| productFirmwareVersionNumber | Firmware version number of product |
+| productVendorName            | Vendor name of product |
+| cpuNumberOfSockets           | Number of sockets of CPU |
+| cpuNumberOfCores             | Number of cores of CPU |
+| cpuNumberOfProcessors        | Number of processors of CPU |
+| memoryTotalSize              | Total Size of memory |
+| storageTotalSize             | Total Size of storage |
+| packagesTotal                | Number of installed packages |
+| windowsupdatesTotal          | Number of applied windows updates (windows only) |
+| updatedAt                    | Last updated datetime |
+
 
 ## Options
 
 * `--url URL`
     * node list url or snapshots url
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networdId>/managed-nodes `
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networdId>/snapshots`
+    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes `
+    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots`
 * `--config_path FILEPATH`
     * config.yml path
     * default:`config.yml`
@@ -54,7 +89,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
     * output filename
 * `--format OUTPUT_FORMAT`
     * `csv` or `xlsx`
-    * default: `csv` 
+    * default: `csv`
 * `--zeroth`
-    * output only 0 array data. 
+    * output only 0 array data.
 

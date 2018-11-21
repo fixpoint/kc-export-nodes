@@ -83,10 +83,10 @@ def main(args):
         logger.error('file "%s" is not found.' % args.config_path)
         exit(1)
     target = ''
-    if args.url[-13:] == 'managed-nodes':
+    if args.url[-14:] == '/managed-nodes':
         target = 'managed-nodes'
-    elif args.url[-9:] == 'snapshots':
-        target = 'snapshots'
+    elif args.url[-6:] == '/nodes':
+        target = 'snapshot-nodes'
     else:
         logger.error('%s invalid url.' % args.url)
         exit(1)
@@ -151,6 +151,7 @@ def main(args):
                 'cpuNumberOfCores': jmespath.search('extraFields.cpu.numberOfCores', item),
                 'cpuNumberOfProcessors': jmespath.search('extraFields.cpu.numberOfProcessors', item),
                 'memoryTotalSize': jmespath.search('extraFields.memory.totalSize', item),
+                'storageNumberOfDrives': jmespath.search('extraFields.storage.numberOfDrives', item),
                 'storageTotalSize': jmespath.search('extraFields.storage.totalSize', item),
                 'packagesTotal': jmespath.search('numberOfPackages', item),
                 'windowsupdatesTotal': jmespath.search('numberOfWindowsUpdates', item),
@@ -162,25 +163,48 @@ def main(args):
                 row['subnet'] = jmespath.search('addresses[0].subnet', item)
                 row['macaddr'] = jmespath.search('addresses[0].macaddr', item)
                 row['vendor'] = jmespath.search('addresses[0].extraFields.macaddr.organizationName', item)
-        elif target == 'snapshots':  # Snapshot List
-            startedAt = jmespath.search('task.startedAt', item)
-            terminatedAt = jmespath.search('task.terminatedAt', item)
-
-            deltaTime = datetime.timedelta()
-            if startedAt and terminatedAt:
-                deltaTime = datetime.datetime.strptime(terminatedAt, time_format) - datetime.datetime.strptime(startedAt, time_format)
-
+        elif target == 'snapshot-nodes':  # snapshot nodes List
+            nodeId = jmespath.search('nodeId', item)
             row = {
                 'networkId': jmespath.search('networkId', item),
-                'createdAt': jmespath.search('createdAt', item),
-                'startedAt': startedAt,
-                'terminatedAt': terminatedAt,
-                'deltaTime': deltaTime,
-                'ksockets': len(jmespath.search('ksockets', item)),
-                'numberOfNodes': jmespath.search('numberOfNodes', item),
-                'numberOfAddresses': jmespath.search('numberOfAddresses', item),
-                'taskStatus': jmespath.search('task.status', item),
+                'snapshotId': jmespath.search('snapshotId', item),
+                'nodeId': nodeId,
+                'aggregationType': jmespath.search('aggregationType', item),
+                'hostName': json.dumps(jmespath.search('addresses[].hostnames[].hostname', item)),
+                'ipAddress': json.dumps(jmespath.search('addresses[].addr', item)),
+                'subnet': json.dumps(jmespath.search('addresses[].subnet', item)),
+                'macaddr': json.dumps(jmespath.search('addresses[].macaddr', item)),
+                'vendor': json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item)),
+                'systemFamily': jmespath.search('system.family', item),
+                'systemVersion': jmespath.search('system.version', item),
+                'systemSerial': jmespath.search('system.serial', item),
+                'biosVendorName': jmespath.search('extraFields.bios.vendorName', item),
+                'biosVersionNumber': jmespath.search('extraFields.bios.versionNumber', item),
+                'motherboardVendorName': jmespath.search('extraFields.motherboard.vendorName', item),
+                'motherboardModelNumber': jmespath.search('extraFields.motherboard.modelNumber', item),
+                'motherboardVersionNumber': jmespath.search('extraFields.motherboard.versionNumber', item),
+                'motherboardSerialNumber': jmespath.search('extraFields.motherboard.serialNumber', item),
+                'productModelNumber': jmespath.search('extraFields.product.modelNumber', item),
+                'productModelName': jmespath.search('extraFields.product.modelName', item),
+                'productSerialNumber': jmespath.search('extraFields.product.serialNumber', item),
+                'productVersionNumber': jmespath.search('extraFields.product.versionNumber', item),
+                'productFirmwareVersionNumber': jmespath.search('extraFields.product.firmwareVersionNumber', item),
+                'productVendorName': jmespath.search('extraFields.product.vendorName', item),
+                'cpuNumberOfSockets': jmespath.search('extraFields.cpu.numberOfSockets', item),
+                'cpuNumberOfCores': jmespath.search('extraFields.cpu.numberOfCores', item),
+                'cpuNumberOfProcessors': jmespath.search('extraFields.cpu.numberOfProcessors', item),
+                'memoryTotalSize': jmespath.search('extraFields.memory.totalSize', item),
+                'storageNumberOfDrives': jmespath.search('extraFields.storage.numberOfDrives', item),
+                'storageTotalSize': jmespath.search('extraFields.storage.totalSize', item),
+                'packagesTotal': jmespath.search('numberOfPackages', item),
+                'windowsupdatesTotal': jmespath.search('numberOfWindowsUpdates', item),
             }
+            if args.zeroth:
+                row['hostName'] = jmespath.search('addresses[0].hostnames[0].hostname', item)
+                row['ipAddress'] = jmespath.search('addresses[0].addr', item)
+                row['subnet'] = jmespath.search('addresses[0].subnet', item)
+                row['macaddr'] = jmespath.search('addresses[0].macaddr', item)
+                row['vendor'] = jmespath.search('addresses[0].extraFields.macaddr.organizationName', item)
 
         rows.append(row)
 

@@ -74,7 +74,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | cpuNumberOfCores             | Number of cores of CPU |
 | cpuNumberOfProcessors        | Number of processors of CPU |
 | memoryTotalSize              | Total Size of memory |
-| storageNumberOfDrives        | Number of storage drive |
+| storageNumberOfDrives        | Number of storage drives |
 | storageTotalSize             | Total Size of storage |
 | packagesTotal                | Number of installed packages |
 | windowsupdatesTotal          | Number of applied windows updates (windows only) |
@@ -113,8 +113,8 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | cpuNumberOfCores             | Number of cores of CPU |
 | cpuNumberOfProcessors        | Number of processors of CPU |
 | memoryTotalSize              | Total Size of memory |
-| storageNumberOfDrives        | Number of storage |
-| storageTotalSize             | Total Size of storage drive |
+| storageNumberOfDrives        | Number of storage drives |
+| storageTotalSize             | Total Size of storage |
 | packagesTotal                | Number of installed packages |
 | windowsupdatesTotal          | Number of applied windows updates (windows only) |
 

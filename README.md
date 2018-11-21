@@ -43,6 +43,8 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 
 ## Columns
 
+### managed-nodes
+
 | Column Name | Description |
 | ----- | ----- |
 | networkId                    | Network ID on Kompira cloud |
@@ -72,10 +74,49 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | cpuNumberOfCores             | Number of cores of CPU |
 | cpuNumberOfProcessors        | Number of processors of CPU |
 | memoryTotalSize              | Total Size of memory |
+| storageNumberOfDrives        | Number of storage drive |
 | storageTotalSize             | Total Size of storage |
 | packagesTotal                | Number of installed packages |
 | windowsupdatesTotal          | Number of applied windows updates (windows only) |
 | updatedAt                    | Last updated datetime |
+
+
+### snapshot-node
+
+| Column Name | Description |
+| ----- | ----- |
+| networkId                    | Network ID on Kompira cloud |
+| snapshotId                   | Snapshot ID on Kompira cloud |
+| nodeId                       | Node ID on Kompira cloud |
+| aggregationType              | Aggregation Type |
+| hostName                     | Hostname |
+| ipAddress                    | IP Address |
+| subnet                       | subnet |
+| macaddr                      | Mac Address |
+| vendor                       | Vendor Name (from Mac Address) |
+| systemFamily                 | System family name |
+| systemVersion                | Version number of system |
+| systemSerial                 | Serial number of system |
+| biosVendorName               | Vendor name of bios |
+| biosVersionNumber            | Version number of bios |
+| motherboardVendorName        | Vendor name of motherboard |
+| motherboardModelNumber       | Model number of motherboard |
+| motherboardVersionNumber     | Version number of motherboard |
+| motherboardSerialNumber      | Serial number of motherboard |
+| productModelNumber           | Model number of product |
+| productModelName             | Model name of product |
+| productSerialNumber          | Serial number of product |
+| productVersionNumber         | Version number of product |
+| productFirmwareVersionNumber | Firmware version number of product |
+| productVendorName            | Vendor name of product |
+| cpuNumberOfSockets           | Number of sockets of CPU |
+| cpuNumberOfCores             | Number of cores of CPU |
+| cpuNumberOfProcessors        | Number of processors of CPU |
+| memoryTotalSize              | Total Size of memory |
+| storageNumberOfDrives        | Number of storage |
+| storageTotalSize             | Total Size of storage drive |
+| packagesTotal                | Number of installed packages |
+| windowsupdatesTotal          | Number of applied windows updates (windows only) |
 
 
 ## Options
@@ -83,7 +124,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 * `--url URL`
     * node list url or snapshots url
     * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>`
+    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes`
 * `--config_path FILEPATH`
     * config.yml path
     * default:`config.yml`

@@ -41,6 +41,8 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 
 ## カラム
 
+### ノード一覧
+
 | カラム名 | 説明 |
 | ----- | ----- |
 | networkId                    | Kompira cloud上のネットワークID |
@@ -70,18 +72,56 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | cpuNumberOfCores             | CPU コア数 |
 | cpuNumberOfProcessors        | CPU プロセッサ数 |
 | memoryTotalSize              | メモリ総容量 |
+| storageNumberOfDrives        | ストレージドライブ数 |
 | storageTotalSize             | ストレージ総容量 |
 | packagesTotal                | パッケージ数 |
 | windowsupdatesTotal          | Windows アップデート数 |
 | updatedAt                    | 最後に更新された日時 |
 
 
+### スナップショットノード一覧
+
+| カラム名 | 説明 |
+| ----- | ----- |
+| networkId                    | Kompira cloud上のネットワークID |
+| snapshotId                   | Kompira cloud上のスナップショットID |
+| nodeId                       | Kompira cloud上のノードID |
+| aggregationType              | 集約タイプ |
+| hostName                     | ホスト名 |
+| ipAddress                    | IPアドレス |
+| subnet                       | サブネット |
+| macaddr                      | MACアドレス |
+| vendor                       | ベンダー名 |
+| systemFamily                 | 機種・OS |
+| systemVersion                | システムバージョン |
+| systemSerial                 | システムシリアル |
+| biosVendorName               | BIOS ベンダ名 |
+| biosVersionNumber            | BIOS バージョン |
+| motherboardVendorName        | マザーボードベンダ名 |
+| motherboardModelNumber       | マザーボードモデル番号 |
+| motherboardVersionNumber     | マザーボードバージョン |
+| motherboardSerialNumber      | マザーボードシリアル番号 |
+| productModelNumber           | 製品モデル番号 |
+| productModelName             | 製品モデル名 |
+| productSerialNumber          | 製品シリアル番号 |
+| productVersionNumber         | 製品バージョン |
+| productFirmwareVersionNumber | 製品ファームウェアバージョン |
+| productVendorName            | 製品ベンダ名 |
+| cpuNumberOfSockets           | CPU ソケット数 |
+| cpuNumberOfCores             | CPU コア数 |
+| cpuNumberOfProcessors        | CPU プロセッサ数 |
+| memoryTotalSize              | メモリ総容量 |
+| storageNumberOfDrives        | ストレージドライブ数 |
+| storageTotalSize             | ストレージ総容量 |
+| packagesTotal                | パッケージ数 |
+| windowsupdatesTotal          | Windows アップデート数 |
+
 ## Options
 
 * `--url URL`
     * 情報取得元のノード一覧URL または スナップショットURLを指定
     * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>`
+    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes`
 * `--config_path FILEPATH`
     * config.yml ファイルパス
     * default:`config.yml`

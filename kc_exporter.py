@@ -83,10 +83,10 @@ def main(args):
         logger.error('file "%s" is not found.' % args.config_path)
         exit(1)
     target = ''
-    if args.url[-13:] == 'managed-nodes':
+    if args.url[-14:] == '/managed-nodes':
         target = 'managed-nodes'
-    elif args.url[-5:] == 'nodes':
-        target = 'nodes'
+    elif args.url[-6:] == '/nodes':
+        target = 'snapshot-nodes'
     else:
         logger.error('%s invalid url.' % args.url)
         exit(1)
@@ -163,7 +163,7 @@ def main(args):
                 row['subnet'] = jmespath.search('addresses[0].subnet', item)
                 row['macaddr'] = jmespath.search('addresses[0].macaddr', item)
                 row['vendor'] = jmespath.search('addresses[0].extraFields.macaddr.organizationName', item)
-        elif target == 'nodes':  # snapshot nodes List
+        elif target == 'snapshot-nodes':  # snapshot nodes List
             nodeId = jmespath.search('nodeId', item)
             row = {
                 'networkId': jmespath.search('networkId', item),

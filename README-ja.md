@@ -36,7 +36,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
 
 # スナップショットノード一覧をxlsx形式で出力
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId> --filename kc_snapshotlist --format xlsx
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --format xlsx
 ```
 
 ## カラム

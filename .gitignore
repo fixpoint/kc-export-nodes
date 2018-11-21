@@ -5,3 +5,6 @@
 *.py[cod]
 _test*.py
 config.yml
+
+*.csv
+*.xlsx

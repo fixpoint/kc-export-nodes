@@ -122,10 +122,6 @@ def main(args):
     for item in items:
         if target == 'managed-nodes':  # Node List
             managedNodeId = jmespath.search('managedNodeId', item)
-            pk_res_json = kcapi.get_from_url(args.url + '/%s/packages' % managedNodeId, {})
-            logger.debug(pk_res_json)
-            wu_res_json = kcapi.get_from_url(args.url + '/%s/windows-updates' % managedNodeId, {})
-            logger.debug(wu_res_json)
 
             row = {
                 'networkId': jmespath.search('networkId', item),
@@ -156,8 +152,8 @@ def main(args):
                 'cpuNumberOfProcessors': jmespath.search('extraFields.cpu.numberOfProcessors', item),
                 'memoryTotalSize': jmespath.search('extraFields.memory.totalSize', item),
                 'storageTotalSize': jmespath.search('extraFields.storage.totalSize', item),
-                'packagesTotal': jmespath.search('total', pk_res_json),
-                'windowsupdatesTotal': jmespath.search('total', wu_res_json),
+                'packagesTotal': jmespath.search('numberOfPackages', item),
+                'windowsupdatesTotal': jmespath.search('numberOfWindowsUpdates', item),
                 'updatedAt': jmespath.search('updatedAt', item)
             }
             if args.zeroth:

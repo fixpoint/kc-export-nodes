@@ -7,6 +7,14 @@ Kompira cloudのノード情報をcsv/xlsx形式で出力するコマンドを�
 
 ## インストール
 
+### Python のインストール
+
+お使いの環境に沿って、以下のページを参考に Python 3.6 をインストールしてください。
+
+- [Ubuntu](https://www.python.jp/install/ubuntu/index.html)
+- [CentOS](https://www.python.jp/install/centos/index.html)
+- [Windows](https://www.python.jp/install/windows/install_py3.html)
+
 ### Python モジュールのインストール
 ```
 pip install openpyxl requests PyYAML jmespath
@@ -15,6 +23,9 @@ pip install openpyxl requests PyYAML jmespath
 ### config.yml の作成
 
 `config.yml.sample` を参考に、 `config.yml` を作成してください。
+
+`your_kompira_cloud_api_token` の部分には、お使いのKompira cloudの「全体設定 > APIトークン」で発行したトークン文字列を記載してください。
+
 
 ```
 kompira_cloud:

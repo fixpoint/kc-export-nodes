@@ -17,7 +17,7 @@ Kompira cloudのノード情報をcsv/xlsx形式で出力するコマンドを�
 
 ### Python モジュールのインストール
 ```
-pip install openpyxl requests PyYAML jmespath
+$ pip install openpyxl requests PyYAML jmespath
 ```
 
 ### config.yml の作成
@@ -38,16 +38,16 @@ Kompira cloudのノード一覧URL、もしくはスナップショットURLを�
 
 ```
 # ノード一覧をxlsx形式で出力
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx
+$ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx
 
 # ノード一覧をcsv形式で出力
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format csv
+$ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format csv
 
 # 複数の値を持つカラムは最初のデータのみ書くようにする
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
+$ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
 
 # スナップショットノード一覧をxlsx形式で出力
-kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --format xlsx
+$ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --format xlsx
 ```
 
 ## カラム

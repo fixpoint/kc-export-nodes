@@ -2,6 +2,7 @@
 
 import requests
 import urllib.parse
+from .helper import logger
 
 class KompiraCloudAPI(object):
 
@@ -19,6 +20,7 @@ class KompiraCloudAPI(object):
             self.auth = None
 
     def get(self, url, params=None):
+        logger.info('Call API: %s %s' % (url, params))
         res = requests.get(url, params=params, headers=self.request_header, auth=self.auth, timeout=self.timeout)
         if res.status_code != 200:
             raise requests.RequestException(res.text)

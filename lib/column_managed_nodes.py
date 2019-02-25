@@ -1,4 +1,4 @@
-columns = {
+node_columns = {
     'networkId': {
         'path': 'networkId'
     },
@@ -124,5 +124,23 @@ columns = {
     },
     'updatedAt': {
         'path': 'updatedAt'
+    }
+}
+
+package_columns = {
+    'managedNodeId': {
+        'node_key': 'managedNodeId',
+    },
+    'hostName': {
+        'node_key': 'hostName'
+    },
+    'name': {
+        'path': 'name'
+    },
+    'version': {
+        'path': 'version'
+    },
+    'architecture': {
+        'path': 'arch'
     }
 }

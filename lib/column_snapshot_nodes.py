@@ -1,4 +1,4 @@
-columns = {
+node_columns = {
     'networkId': {
         'path': 'networkId'
     },
@@ -124,5 +124,23 @@ columns = {
     },
     'windowsupdatesTotal': {
         'path': 'numberOfWindowsUpdates'
+    }
+}
+
+package_columns = {
+    'nodeId': {
+        'node_key': 'nodeId',
+    },
+    'hostName': {
+        'node_key': 'hostName',
+    },
+    'name': {
+        'path': 'name'
+    },
+    'version': {
+        'path': 'version'
+    },
+    'architecture': {
+        'path': 'arch'
     }
 }

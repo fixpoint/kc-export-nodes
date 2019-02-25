@@ -4,13 +4,16 @@ import openpyxl
 from openpyxl.utils import get_column_letter
 from openpyxl.styles.borders import Border, Side
 
+from .helper import logger
+
 def get_exporter(format):
     if format == 'csv':
         return CSVExporter()
     elif format == 'xlsx':
         return ExcelExporter()
     else:
-        return None
+        logger.error('format "%s" is not supported.' % format)
+        exit(1)
 
 class Exporter:
     def __init__(self):

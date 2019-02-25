@@ -31,6 +31,31 @@ columns = {
         'path': 'addresses[].extraFields.macaddr.organizationName',
         'path_zeroth': 'addresses[0].extraFields.macaddr.organizationName'
     },
+    'internalIpAddress': {
+        'path': 'sort_by(interfaces[], &macaddr)[].addr',
+        # 存在する値の先頭を取得する
+        'path_zeroth': 'sort_by(interfaces[], &macaddr)[].addr | [0]'
+    },
+    'internalSubnet': {
+        'path': 'sort_by(interfaces[], &macaddr)[].netmask',
+        # 存在する値の先頭を取得する
+        'path_zeroth': 'sort_by(interfaces[], &macaddr)[].netmask | [0]'
+    },
+    'internalMacaddr': {
+        'path': 'sort_by(interfaces[], &macaddr)[].macaddr',
+        # 存在する値の先頭を取得する
+        'path_zeroth': 'sort_by(interfaces[], &macaddr)[].macaddr | [0]'
+    },
+    'internalIfname': {
+        'path': 'sort_by(interfaces[], &macaddr)[].ifname',
+        # 存在する値の先頭を取得する
+        'path_zeroth': 'sort_by(interfaces[], &macaddr)[].ifname | [0]'
+    },
+    'internalVendor': {
+        'path': 'extraFields.networking.macaddrs.*.organizationName',
+        # 存在する値の先頭を取得する
+        'path_zeroth': 'extraFields.networking.macaddrs.*.organizationName | [0]'
+    },
     'systemFamily': {
         'path': 'system.family'
     },

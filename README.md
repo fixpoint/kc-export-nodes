@@ -54,7 +54,12 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | ipAddress                    | IP Address |
 | subnet                       | subnet |
 | macaddr                      | Mac Address |
-| vendor                       | Vendor Name (from Mac Address) |
+| vendor                       | Vendor Name (from macaddr) |
+| internalIpAddress            | IP Address, internal information of node |
+| internalSubnet               | subnet, internal information of node |
+| internalMacaddr              | Mac Address, internal information of node |
+| internalIfname               | Interface Name, internal information of node |
+| internalVendor               | Vendor Name (from internalMacaddr) |
 | systemFamily                 | System family name |
 | systemVersion                | Version number of system |
 | systemSerial                 | Serial number of system |
@@ -93,7 +98,12 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | ipAddress                    | IP Address |
 | subnet                       | subnet |
 | macaddr                      | Mac Address |
-| vendor                       | Vendor Name (from Mac Address) |
+| vendor                       | Vendor Name (from macaddr) |
+| internalIpAddress            | IP Address, internal information of node |
+| internalSubnet               | subnet, internal information of node |
+| internalMacaddr              | Mac Address, internal information of node |
+| internalIfname               | Interface Name, internal information of node |
+| internalVendor               | Vendor Name (from internalMacaddr) |
 | systemFamily                 | System family name |
 | systemVersion                | Version number of system |
 | systemSerial                 | Serial number of system |

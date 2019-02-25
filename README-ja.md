@@ -63,7 +63,12 @@ $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/
 | ipAddress                    | IPアドレス |
 | subnet                       | サブネット |
 | macaddr                      | MACアドレス |
-| vendor                       | ベンダー名 |
+| vendor                       | ifnameに基づくベンダー名 |
+| internalIpAddress            | IPアドレス (ノード内部から取得) |
+| internalSubnet               | サブネット (ノード内部から取得) |
+| internalMacaddr              | MACアドレス (ノード内部から取得) |
+| internalIfname               | インターフェース名 (ノード内部から取得) |
+| internalVendor               | internalIfnameに基づくベンダー名 |
 | systemFamily                 | 機種・OS |
 | systemVersion                | システムバージョン |
 | systemSerial                 | システムシリアル |
@@ -102,7 +107,12 @@ $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/
 | ipAddress                    | IPアドレス |
 | subnet                       | サブネット |
 | macaddr                      | MACアドレス |
-| vendor                       | ベンダー名 |
+| vendor                       | ifnameに基づくベンダー名 |
+| internalIpAddress            | IPアドレス (ノード内部から取得) |
+| internalSubnet               | サブネット (ノード内部から取得) |
+| internalMacaddr              | MACアドレス (ノード内部から取得) |
+| internalIfname               | インターフェース名 (ノード内部から取得) |
+| internalVendor               | internalIfnameに基づくベンダー名 |
 | systemFamily                 | 機種・OS |
 | systemVersion                | システムバージョン |
 | systemSerial                 | システムシリアル |

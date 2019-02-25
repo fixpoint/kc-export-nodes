@@ -128,12 +128,15 @@ def main(args):
     for node in nodes:
         row = {}
         for key, val in columns.items():
-            if 'zeroth' in val:
-                v = jmespath.search(val['path_zeroth'], node)
-            else:
-                v = jmespath.search(val['path'], node)
-            if isinstance(v, list) or isinstance(v, dict):
-                v = json.dumps(v)
+            try:
+                if 'zeroth' in val:
+                    v = jmespath.search(val['path_zeroth'], node)
+                else:
+                    v = jmespath.search(val['path'], node)
+                if isinstance(v, list) or isinstance(v, dict):
+                    v = json.dumps(v)
+            except Exception:
+                v = None
             row[key] = v
         rows.append(row)
 

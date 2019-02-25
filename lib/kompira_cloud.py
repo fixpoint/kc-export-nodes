@@ -29,7 +29,6 @@ class KompiraCloudAPI(object):
         offset = 0
         items = []
         while True:
-            print(offset, limit)
             json_data = self.get(url, params={"offset": offset, "limit": limit})
             if 'items' not in json_data:
                 break

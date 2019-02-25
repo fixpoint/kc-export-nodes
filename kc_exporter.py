@@ -3,29 +3,16 @@
 import yaml
 import argparse
 import os
-import csv
-import openpyxl
 import json
 import jmespath
 import datetime
 import importlib
 
-from collections import defaultdict
 from lib.helper import logger
 from lib.kompira_cloud import KompiraCloudAPI
-from openpyxl.utils import get_column_letter
-from openpyxl.styles.borders import Border, Side
+from lib.exporter import get_exporter, CSVExporter, ExcelExporter
 
-accept_format = ['csv', 'xlsx']
-
-border = Border(
-    top=Side(style='thin', color='000000'),
-    bottom=Side(style='thin', color='000000'),
-    left=Side(style='thin', color='000000'),
-    right=Side(style='thin', color='000000')
-)
-
-def get_columns(datatype):
+def get_node_columns(datatype):
     if datatype == 'managed-nodes':
         rule_module = importlib.import_module('lib.column_managed_nodes')
         return rule_module.columns
@@ -33,54 +20,24 @@ def get_columns(datatype):
         rule_module = importlib.import_module('lib.column_snapshot_nodes')
         return rule_module.columns
 
-def export_csv(rows, filename):
-    logger.info("Export node list: csv")
-    with open(filename, 'w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=rows[0].keys())
-        writer.writeheader()
-        for row in rows:
-            writer.writerow(row)
-
-
-def export_xlsx(rows, filename):
-    logger.info("Export node list: xlsx")
-    wb = openpyxl.Workbook()
-    sheet = wb.create_sheet('NodeList')
-
-    max_dims = defaultdict(lambda: 0)
-    # Headers
-    headers = rows[0].keys()
-    for i, header in enumerate(headers):
-        cell = sheet.cell(row=1, column=i+1, value=header)
-        max_dims[header] = len(header)
-
-        cell.border = border
-
-    # Values
-    row_num = 2
-    for row in rows:
-        for i, header in enumerate(headers):
-            cell = sheet.cell(row=row_num, column=i+1, value=row[header])
-
-            cell.border = border
-
-            if type(row[header]) == str:
-                col_len = len(row[header])
-            else:
-                col_len = len(str(row[header]))
-            if col_len > max_dims[header]:
-                max_dims[header] = col_len
-        row_num += 1
-
-    # cell size
-    for i, header in enumerate(headers):
-        if max_dims[header]:
-            sheet.column_dimensions[get_column_letter(i+1)].width = max_dims[header]
-
-    if wb['Sheet']:
-        wb.remove(wb['Sheet'])
-    wb.save(filename)
-
+def export_nodes(nodes, target, format, filename, exporter):
+    columns = get_node_columns(target)
+    node_rows = []
+    for node in nodes:
+        row = {}
+        for key, val in columns.items():
+            try:
+                if 'zeroth' in val:
+                    v = jmespath.search(val['path_zeroth'], node)
+                else:
+                    v = jmespath.search(val['path'], node)
+                if isinstance(v, list) or isinstance(v, dict):
+                    v = json.dumps(v)
+            except Exception:
+                v = None
+            row[key] = v
+        node_rows.append(row)
+    exporter.export(node_rows, filename)
 
 def main(args):
     logger.info('Args value check')
@@ -96,7 +53,8 @@ def main(args):
         logger.error('%s invalid url.' % args.url)
         exit(1)
 
-    if args.format not in accept_format:
+    exporter = get_exporter(args.format)
+    if not exporter:
         logger.error('format "%s" is not supported.' % args.format)
         exit(1)
 
@@ -122,29 +80,7 @@ def main(args):
     nodes = kcapi.get_items_from_webui_url(args.url)
     logger.debug(nodes)
 
-    columns = get_columns(target)
-
-    rows = []
-    for node in nodes:
-        row = {}
-        for key, val in columns.items():
-            try:
-                if 'zeroth' in val:
-                    v = jmespath.search(val['path_zeroth'], node)
-                else:
-                    v = jmespath.search(val['path'], node)
-                if isinstance(v, list) or isinstance(v, dict):
-                    v = json.dumps(v)
-            except Exception:
-                v = None
-            row[key] = v
-        rows.append(row)
-
-    if args.format == 'csv':
-        export_csv(rows, '%s.csv' % args.filename)
-    elif args.format == 'xlsx':
-        export_xlsx(rows, '%s.xlsx' % args.filename)
-
+    export_nodes(nodes, target, args.format, args.filename, exporter)
     logger.info('Output complete.')
 
 

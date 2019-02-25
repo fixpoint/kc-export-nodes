@@ -119,20 +119,19 @@ def main(args):
 
     logger.info("Get list from KompiraCloud")
 
-    res_json = kcapi.get_from_url(args.url, {'limit': 500})
-    items = res_json['items']
-    logger.debug(items)
+    nodes = kcapi.get_items_from_webui_url(args.url)
+    logger.debug(nodes)
 
     columns = get_columns(target)
 
     rows = []
-    for item in items:
+    for node in nodes:
         row = {}
         for key, val in columns.items():
             if 'zeroth' in val:
-                v = jmespath.search(val['path_zeroth'], item)
+                v = jmespath.search(val['path_zeroth'], node)
             else:
-                v = jmespath.search(val['path'], item)
+                v = jmespath.search(val['path'], node)
             if isinstance(v, list) or isinstance(v, dict):
                 v = json.dumps(v)
             row[key] = v

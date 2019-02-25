@@ -18,26 +18,35 @@ class KompiraCloudAPI(object):
         else:
             self.auth = None
 
-    def get(self, url, params={}):
-        try:
-            res = requests.get(url, params=params, headers=self.request_header, auth=self.auth, timeout=self.timeout)
-            if res.status_code != 200:
-                raise requests.RequestException(res.text)
-            res = res.json()
-        except requests.RequestException as e:
-            # logging?
-            raise
-        except ValueError as e:
-            # logging?
-            raise
+    def get(self, url, params=None):
+        res = requests.get(url, params=params, headers=self.request_header, auth=self.auth, timeout=self.timeout)
+        if res.status_code != 200:
+            raise requests.RequestException(res.text)
+        res = res.json()
         return res
 
-    def convert_api_url(self, url):
-        uri = urllib.parse.urlparse(url)
+    def get_items_all(self, url, limit=1000):
+        offset = 0
+        items = []
+        while True:
+            print(offset, limit)
+            json_data = self.get(url, params={"offset": offset, "limit": limit})
+            if 'items' not in json_data:
+                break
+            if len(json_data['items']) == 0:
+                break
+            items.extend(json_data['items'])
+            offset += limit
+            if offset > json_data['total']:
+                break
+        return items
+
+    def get_api_url(self, webui_url):
+        uri = urllib.parse.urlparse(webui_url)
         if uri.path.startswith('/api'):
-            return url
+            return webui_url
         return uri._replace(path = '/api' + uri.path).geturl()
 
-    def get_from_url(self, url, params={}):
-        url = self.convert_api_url(url)
-        return self.get(url, params)
+    def get_items_from_webui_url(self, webui_url):
+        url = self.get_api_url(webui_url)
+        return self.get_items_all(url)

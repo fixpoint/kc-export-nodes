@@ -11,7 +11,7 @@ Export Nodes data on Kompira cloud
 
 ### Install python modules
 ```
-pip install openpyxl requests PyYAML jmespath
+pip install -r requirements.txt
 ```
 
 ### Make config.yml

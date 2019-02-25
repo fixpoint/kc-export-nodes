@@ -17,7 +17,7 @@ Kompira cloudのノード情報をcsv/xlsx形式で出力するコマンドを�
 
 ### Python モジュールのインストール
 ```
-$ pip install openpyxl requests PyYAML jmespath
+$ pip install -r requirements.txt
 ```
 
 ### config.yml の作成

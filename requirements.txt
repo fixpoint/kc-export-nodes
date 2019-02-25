@@ -1,0 +1,4 @@
+openpyxl==2.5.10
+requests==2.19.1
+PyYAML==3.13
+jmespath==0.9.3

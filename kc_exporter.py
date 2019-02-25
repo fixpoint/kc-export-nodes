@@ -9,7 +9,7 @@ def main(args):
     if args.filename == "":
         logger.error('please input filename.')
         exit(1)
-    node_manager = get_node_manager(args.url, args.format, args.config_path)
+    node_manager = get_node_manager(args.url, args.format, args.config_path, args.zeroth)
     logger.info("Get list from KompiraCloud")
     node_manager.fetch_nodes()
     node_manager.export_nodes(args.filename)

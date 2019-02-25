@@ -8,6 +8,7 @@
     - internalMacaddr
     - internalIfname
     - internalVendor
+- パッケージ一覧の出力機能を追加
 
 ## v0.1.0 - 2018-11-29
 - Initial Release

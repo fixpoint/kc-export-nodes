@@ -34,11 +34,17 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 # Output node list to csv file
 kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format csv
 
+# Output node list & package list to xlsx file
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --package_filename kc_packagelist --format xlsx
+
 # node list(0 array data only)
 kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
 
 # Output snapshot-node list to xlsx file
 kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --format xlsx
+
+# Output snapshot-node list and package list to csv file
+kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --package_filename kc_packagelist --format csv
 ```
 
 ## Columns
@@ -129,20 +135,35 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | windowsupdatesTotal          | Number of applied windows updates (windows only) |
 
 
+### packages
+
+| Column Name | Description |
+| ----- | ----- |
+| managedNodeId                | Managed Node ID (Only when output managed-nodes) |
+| nodeId                       | Node ID (Only when output snapshot-nodes) |
+| hostName                     | Hostname |
+| name                         | Package name |
+| version                      | Version |
+| architecture                 | Architecture (Linux Node Only) |
+
+
+
 ## Options
 
-* `--url URL`
-    * node list url or snapshots url
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes`
-* `--config_path FILEPATH`
-    * config.yml path
-    * default:`config.yml`
-* `--filename FILEPATH`
-    * output filename
-* `--format OUTPUT_FORMAT`
-    * `csv` or `xlsx`
-    * default: `csv`
-* `--zeroth`
-    * output only 0 array data.
+- `--url URL`
+    - node list url or snapshots url
+    - example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
+    - example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes`
+- `--config_path FILEPATH`
+    - config.yml path
+    - default:`config.yml`
+- `--filename FILEPATH`
+    - node list output file path
+- `--package_filename FILEPATH`
+    - package list output file path
+- `--format OUTPUT_FORMAT`
+    - `csv` or `xlsx`
+    - default: `csv`
+- `--zeroth`
+    - output only 0 array data.
 

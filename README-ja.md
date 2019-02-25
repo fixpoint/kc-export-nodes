@@ -43,11 +43,17 @@ $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/
 # ノード一覧をcsv形式で出力
 $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format csv
 
+# ノード一覧とパッケージ一覧をxlsx形式で出力
+$ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --package_filename kc_packagelist --format xlsx
+
 # 複数の値を持つカラムは最初のデータのみ書くようにする
 $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes --filename kc_nodelist --format xlsx --zeroth
 
 # スナップショットノード一覧をxlsx形式で出力
 $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --format xlsx
+
+# スナップショットノード一覧とパッケージ一覧をcsv形式で出力
+$ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes --filename kc_snapshotlist --package_filename kc_packagelist --format csv
 ```
 
 ## カラム
@@ -137,21 +143,36 @@ $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/
 | packagesTotal                | パッケージ数 |
 | windowsupdatesTotal          | Windows アップデート数 |
 
+### パッケージ一覧
+
+| カラム名 | 説明 |
+| ----- | ----- |
+| managedNodeId                | ノードID (ノード一覧の出力時のみ) |
+| nodeId                       | ノードID (スナップショットノード一覧の出力時のみ) |
+| hostName                     | ホスト名 |
+| name                         | パッケージ名 |
+| version                      | バージョン |
+| architecture                 | アーキテクチャ (Linuxのみ) |
+
+
 ## Options
 
-* `--url URL`
-    * 情報取得元のノード一覧URL または スナップショットURLを指定
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
-    * example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes`
-* `--config_path FILEPATH`
-    * config.yml ファイルパス
-    * default:`config.yml`
-* `--filename FILEPATH`
-    * 出力先ファイルパス
-* `--format OUTPUT_FORMAT`
-    * `csv` or `xlsx`
-    * default: `csv`
-* `--zeroth`
-    * 複数個データが存在するフィールドの場合、先頭のデータの値のみを出力する
-    * 指定しない場合、複数個データが存在するフィールドはjson形式ですべてのデータを出力する
+- `--url URL`
+    - 情報取得元のノード一覧URL または スナップショットURLを指定
+    - example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/managed-nodes`
+    - example: `https://yourspacename.cloud.kompira.jp/apps/sonar/networks/<networkId>/snapshots/<snapshotId>/nodes`
+- `--config_path FILEPATH`
+    - config.yml ファイルパス
+    - default:`config.yml`
+- `--filename FILEPATH`
+    - ノード一覧出力先ファイルパス
+- `--package_filename FILEPATH`
+    - パッケージ一覧出力先ファイルパス
+    - 指定しない場合、パッケージ一覧は出力しない
+- `--format OUTPUT_FORMAT`
+    - `csv` or `xlsx`
+    - default: `csv`
+- `--zeroth`
+    - 複数個データが存在するフィールドの場合、先頭のデータの値のみを出力する
+    - 指定しない場合、複数個データが存在するフィールドはjson形式ですべてのデータを出力する
 

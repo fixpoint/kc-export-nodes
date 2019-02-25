@@ -49,7 +49,7 @@ class Nodes:
         if not self.nodes:
             self.fetch_nodes()
         for node in self.nodes:
-            packages_path = os.path.join(self.nodes_url, node['managedNodeId'], 'packages')
+            packages_path = self.get_packages_path(node)
             ps = self.kcapi.get_items_from_webui_url(packages_path)
             node['packages'] = ps
 
@@ -114,6 +114,9 @@ class ManagedNodes(Nodes):
         self.node_columns = column_module.node_columns
         self.package_columns = column_module.package_columns
 
+    def get_packages_path(self, node):
+        return os.path.join(self.nodes_url, node['managedNodeId'], 'packages')
+
 class SnapshotNodes(Nodes):
     def __init__(self, url, format, config_path):
         super().__init__(url, format, config_path)
@@ -122,3 +125,5 @@ class SnapshotNodes(Nodes):
         self.node_columns = column_module.node_columns
         self.package_columns = column_module.package_columns
 
+    def get_packages_path(self, node):
+        return os.path.join(self.nodes_url, node['nodeId'], 'packages')

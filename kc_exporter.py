@@ -8,6 +8,7 @@ import openpyxl
 import json
 import jmespath
 import datetime
+import importlib
 
 from collections import defaultdict
 from lib.helper import logger
@@ -17,9 +18,6 @@ from openpyxl.styles.borders import Border, Side
 
 accept_format = ['csv', 'xlsx']
 
-time_format = '%Y-%m-%dT%H:%M:%SZ'
-
-
 border = Border(
     top=Side(style='thin', color='000000'),
     bottom=Side(style='thin', color='000000'),
@@ -27,6 +25,13 @@ border = Border(
     right=Side(style='thin', color='000000')
 )
 
+def get_columns(datatype):
+    if datatype == 'managed-nodes':
+        rule_module = importlib.import_module('lib.column_managed_nodes')
+        return rule_module.columns
+    else:
+        rule_module = importlib.import_module('lib.column_snapshot_nodes')
+        return rule_module.columns
 
 def export_csv(rows, filename):
     logger.info("Export node list: csv")
@@ -118,94 +123,19 @@ def main(args):
     items = res_json['items']
     logger.debug(items)
 
+    columns = get_columns(target)
+
     rows = []
     for item in items:
-        if target == 'managed-nodes':  # Node List
-            managedNodeId = jmespath.search('managedNodeId', item)
-
-            row = {
-                'networkId': jmespath.search('networkId', item),
-                'managedNodeId': managedNodeId,
-                'displayName': jmespath.search('displayName', item),
-                'hostName': json.dumps(jmespath.search('addresses[].hostnames[].hostname', item)),
-                'ipAddress': json.dumps(jmespath.search('addresses[].addr', item)),
-                'subnet': json.dumps(jmespath.search('addresses[].subnet', item)),
-                'macaddr': json.dumps(jmespath.search('addresses[].macaddr', item)),
-                'vendor': json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item)),
-                'systemFamily': jmespath.search('system.family', item),
-                'systemVersion': jmespath.search('system.version', item),
-                'systemSerial': jmespath.search('system.serial', item),
-                'biosVendorName': jmespath.search('extraFields.bios.vendorName', item),
-                'biosVersionNumber': jmespath.search('extraFields.bios.versionNumber', item),
-                'motherboardVendorName': jmespath.search('extraFields.motherboard.vendorName', item),
-                'motherboardModelNumber': jmespath.search('extraFields.motherboard.modelNumber', item),
-                'motherboardVersionNumber': jmespath.search('extraFields.motherboard.versionNumber', item),
-                'motherboardSerialNumber': jmespath.search('extraFields.motherboard.serialNumber', item),
-                'productModelNumber': jmespath.search('extraFields.product.modelNumber', item),
-                'productModelName': jmespath.search('extraFields.product.modelName', item),
-                'productSerialNumber': jmespath.search('extraFields.product.serialNumber', item),
-                'productVersionNumber': jmespath.search('extraFields.product.versionNumber', item),
-                'productFirmwareVersionNumber': jmespath.search('extraFields.product.firmwareVersionNumber', item),
-                'productVendorName': jmespath.search('extraFields.product.vendorName', item),
-                'cpuNumberOfSockets': jmespath.search('extraFields.cpu.numberOfSockets', item),
-                'cpuNumberOfCores': jmespath.search('extraFields.cpu.numberOfCores', item),
-                'cpuNumberOfProcessors': jmespath.search('extraFields.cpu.numberOfProcessors', item),
-                'memoryTotalSize': jmespath.search('extraFields.memory.totalSize', item),
-                'storageNumberOfDrives': jmespath.search('extraFields.storage.numberOfDrives', item),
-                'storageTotalSize': jmespath.search('extraFields.storage.totalSize', item),
-                'packagesTotal': jmespath.search('numberOfPackages', item),
-                'windowsupdatesTotal': jmespath.search('numberOfWindowsUpdates', item),
-                'updatedAt': jmespath.search('updatedAt', item)
-            }
-            if args.zeroth:
-                row['hostName'] = jmespath.search('addresses[0].hostnames[0].hostname', item)
-                row['ipAddress'] = jmespath.search('addresses[0].addr', item)
-                row['subnet'] = jmespath.search('addresses[0].subnet', item)
-                row['macaddr'] = jmespath.search('addresses[0].macaddr', item)
-                row['vendor'] = jmespath.search('addresses[0].extraFields.macaddr.organizationName', item)
-        elif target == 'snapshot-nodes':  # snapshot nodes List
-            nodeId = jmespath.search('nodeId', item)
-            row = {
-                'networkId': jmespath.search('networkId', item),
-                'snapshotId': jmespath.search('snapshotId', item),
-                'nodeId': nodeId,
-                'aggregationType': jmespath.search('aggregationType', item),
-                'hostName': json.dumps(jmespath.search('addresses[].hostnames[].hostname', item)),
-                'ipAddress': json.dumps(jmespath.search('addresses[].addr', item)),
-                'subnet': json.dumps(jmespath.search('addresses[].subnet', item)),
-                'macaddr': json.dumps(jmespath.search('addresses[].macaddr', item)),
-                'vendor': json.dumps(jmespath.search('addresses[].extraFields.macaddr.organizationName', item)),
-                'systemFamily': jmespath.search('system.family', item),
-                'systemVersion': jmespath.search('system.version', item),
-                'systemSerial': jmespath.search('system.serial', item),
-                'biosVendorName': jmespath.search('extraFields.bios.vendorName', item),
-                'biosVersionNumber': jmespath.search('extraFields.bios.versionNumber', item),
-                'motherboardVendorName': jmespath.search('extraFields.motherboard.vendorName', item),
-                'motherboardModelNumber': jmespath.search('extraFields.motherboard.modelNumber', item),
-                'motherboardVersionNumber': jmespath.search('extraFields.motherboard.versionNumber', item),
-                'motherboardSerialNumber': jmespath.search('extraFields.motherboard.serialNumber', item),
-                'productModelNumber': jmespath.search('extraFields.product.modelNumber', item),
-                'productModelName': jmespath.search('extraFields.product.modelName', item),
-                'productSerialNumber': jmespath.search('extraFields.product.serialNumber', item),
-                'productVersionNumber': jmespath.search('extraFields.product.versionNumber', item),
-                'productFirmwareVersionNumber': jmespath.search('extraFields.product.firmwareVersionNumber', item),
-                'productVendorName': jmespath.search('extraFields.product.vendorName', item),
-                'cpuNumberOfSockets': jmespath.search('extraFields.cpu.numberOfSockets', item),
-                'cpuNumberOfCores': jmespath.search('extraFields.cpu.numberOfCores', item),
-                'cpuNumberOfProcessors': jmespath.search('extraFields.cpu.numberOfProcessors', item),
-                'memoryTotalSize': jmespath.search('extraFields.memory.totalSize', item),
-                'storageNumberOfDrives': jmespath.search('extraFields.storage.numberOfDrives', item),
-                'storageTotalSize': jmespath.search('extraFields.storage.totalSize', item),
-                'packagesTotal': jmespath.search('numberOfPackages', item),
-                'windowsupdatesTotal': jmespath.search('numberOfWindowsUpdates', item),
-            }
-            if args.zeroth:
-                row['hostName'] = jmespath.search('addresses[0].hostnames[0].hostname', item)
-                row['ipAddress'] = jmespath.search('addresses[0].addr', item)
-                row['subnet'] = jmespath.search('addresses[0].subnet', item)
-                row['macaddr'] = jmespath.search('addresses[0].macaddr', item)
-                row['vendor'] = jmespath.search('addresses[0].extraFields.macaddr.organizationName', item)
-
+        row = {}
+        for key, val in columns.items():
+            if 'zeroth' in val:
+                v = jmespath.search(val['path_zeroth'], item)
+            else:
+                v = jmespath.search(val['path'], item)
+            if isinstance(v, list) or isinstance(v, dict):
+                v = json.dumps(v)
+            row[key] = v
         rows.append(row)
 
     if args.format == 'csv':

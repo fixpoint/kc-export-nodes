@@ -69,6 +69,9 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | systemFamily                 | System family name |
 | systemVersion                | Version number of system |
 | systemSerial                 | Serial number of system |
+| kernelName                   | Kernel Name (Linux only) |
+| kernelVersion                | Kernel Version (Linux only) |
+| kernelRelease                | Kernel Release (Linux only) |
 | biosVendorName               | Vendor name of bios |
 | biosVersionNumber            | Version number of bios |
 | motherboardVendorName        | Vendor name of motherboard |
@@ -88,7 +91,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | storageNumberOfDrives        | Number of storage drives |
 | storageTotalSize             | Total Size of storage |
 | packagesTotal                | Number of installed packages |
-| windowsupdatesTotal          | Number of applied windows updates (windows only) |
+| windowsupdatesTotal          | Number of applied windows updates (Windows only) |
 | updatedAt                    | Last updated datetime |
 
 
@@ -113,6 +116,9 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | systemFamily                 | System family name |
 | systemVersion                | Version number of system |
 | systemSerial                 | Serial number of system |
+| kernelName                   | Kernel Name (Linux only) |
+| kernelVersion                | Kernel Version (Linux only) |
+| kernelRelease                | Kernel Release (Linux only) |
 | biosVendorName               | Vendor name of bios |
 | biosVersionNumber            | Version number of bios |
 | motherboardVendorName        | Vendor name of motherboard |
@@ -132,7 +138,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | storageNumberOfDrives        | Number of storage drives |
 | storageTotalSize             | Total Size of storage |
 | packagesTotal                | Number of installed packages |
-| windowsupdatesTotal          | Number of applied windows updates (windows only) |
+| windowsupdatesTotal          | Number of applied windows updates (Windows only) |
 
 
 ### packages
@@ -144,7 +150,7 @@ kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/networks/
 | hostName                     | Hostname |
 | name                         | Package name |
 | version                      | Version |
-| architecture                 | Architecture (Linux Node Only) |
+| architecture                 | Architecture (Linux Only) |
 
 
 

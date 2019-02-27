@@ -62,6 +62,15 @@ node_columns = {
     'systemSerial': {
         'path': 'system.serial'
     },
+    'kernelName': {
+        'path': 'extraFields.kernel.name'
+    },
+    'kernelVersion': {
+        'path': 'extraFields.kernel.version'
+    },
+    'kernelRelease': {
+        'path': 'extraFields.kernel.release'
+    },
     'biosVendorName': {
         'path': 'extraFields.bios.vendorName'
     },

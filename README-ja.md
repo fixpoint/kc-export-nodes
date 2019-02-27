@@ -78,6 +78,9 @@ $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/
 | systemFamily                 | 機種・OS |
 | systemVersion                | システムバージョン |
 | systemSerial                 | システムシリアル |
+| kernelName                   | カーネル名 (Linuxのみ) |
+| kernelVersion                | カーネルバージョン (Linuxのみ) |
+| kernelRelease                | カーネルリリース情報 (Linuxのみ) |
 | biosVendorName               | BIOS ベンダ名 |
 | biosVersionNumber            | BIOS バージョン |
 | motherboardVendorName        | マザーボードベンダ名 |
@@ -122,6 +125,9 @@ $ python kc_exporter.py --url https://yourspacename.cloud.kompira.jp/apps/sonar/
 | systemFamily                 | 機種・OS |
 | systemVersion                | システムバージョン |
 | systemSerial                 | システムシリアル |
+| kernelName                   | カーネル名 (Linuxのみ) |
+| kernelVersion                | カーネルバージョン (Linuxのみ) |
+| kernelRelease                | カーネルリリース情報 (Linuxのみ) |
 | biosVendorName               | BIOS ベンダ名 |
 | biosVersionNumber            | BIOS バージョン |
 | motherboardVendorName        | マザーボードベンダ名 |

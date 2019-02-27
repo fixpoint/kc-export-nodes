@@ -117,7 +117,7 @@ class ManagedNodes(Nodes):
         self.package_columns = column_module.package_columns
 
     def get_packages_path(self, node):
-        return os.path.join(self.nodes_url, node['managedNodeId'], 'packages')
+        return '/'.join([self.nodes_url, node['managedNodeId'], 'packages'])
 
 class SnapshotNodes(Nodes):
     def __init__(self, url, format, config_path, zeroth):
@@ -128,4 +128,4 @@ class SnapshotNodes(Nodes):
         self.package_columns = column_module.package_columns
 
     def get_packages_path(self, node):
-        return os.path.join(self.nodes_url, node['nodeId'], 'packages')
+        return '/'.join([self.nodes_url, node['nodeId'], 'packages'])

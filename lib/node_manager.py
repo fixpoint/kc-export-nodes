@@ -31,7 +31,7 @@ class Nodes:
             exit(1)
 
         with open(config_path) as f:
-            config = yaml.load(f)
+            config = yaml.load(f, Loader=yaml.Loader)
         if config['kompira_cloud'].get('basic_auth'):
             self.kcapi = KompiraCloudAPI(
                 config['kompira_cloud']['token'],

@@ -2,8 +2,7 @@
 Kompira cloudのノード情報をcsv/xlsx形式で出力するコマンドを提供します。
 
 ## 要件
-- Python 3.6.5
-
+- Python 3.12.11
 
 ## インストール
 

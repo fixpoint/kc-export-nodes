@@ -4,7 +4,7 @@ Export Nodes data on Kompira cloud
 [Japanese README](README-ja.md)
 
 ## Requirements
-- Python 3.6.5
+- Python 3.12.11
 
 
 ## Install
